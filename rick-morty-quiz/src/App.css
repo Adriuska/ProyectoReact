@@ -1,0 +1,304 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Contenedor principal mejorado */
+.app {
+  width: 100%;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 25px;
+  min-height: calc(100vh - 40px);
+  position: relative;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 25px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+/* Efectos de fondo mejorados */
+.app::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Estilos para el game over */
+.game-over {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(103, 126, 234, 0.1);
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.game-over h2 {
+  color: #667eea;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estadísticas detalladas */
+.final-stats {
+  margin: 30px 0;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 15px;
+  min-width: 120px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.stat:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #667eea;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+  text-align: center;
+}
+
+.game-over p {
+  font-size: 1.2rem;
+  margin: 15px 0;
+  color: #333;
+  font-weight: 500;
+}
+
+.game-over strong {
+  color: #764ba2;
+}
+
+.restart-btn {
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.restart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* ===== MODO OSCURO ===== */
+.app.dark {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #ecf0f1;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.app.dark .character-card,
+.app.dark .game-header,
+.app.dark .score-history,
+.app.dark .game-over {
+  background: rgba(26, 32, 44, 0.95);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.app.dark .game-over h2 {
+  color: #63b3ed;
+}
+
+.app.dark .stat {
+  background: linear-gradient(135deg, #2d3748, #4a5568);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.app.dark .stat-value {
+  color: #68d391;
+}
+
+.app.dark .stat-label {
+  color: #cbd5e0;
+}
+
+.app.dark .game-over strong {
+  color: #68d391;
+}
+
+.app.dark .option-btn {
+  background: linear-gradient(135deg, #4a5568, #2d3748);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.app.dark .option-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5a6578, #3d4758);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.app.dark .option-btn.correct {
+  background: linear-gradient(135deg, #2f855a, #276749);
+}
+
+.app.dark .option-btn.incorrect {
+  background: linear-gradient(135deg, #c53030, #9b2c2c);
+}
+
+.app.dark .score-item {
+  background: linear-gradient(135deg, #2d3748, #4a5568);
+  border-left: 4px solid #63b3ed;
+}
+
+.app.dark .difficulty-indicator {
+  background: linear-gradient(135deg, #2d3748, #4a5568);
+  color: #e2e8f0;
+  border: 2px solid #63b3ed;
+}
+
+.app.dark .feedback.correct {
+  background: linear-gradient(135deg, #2d3748, #22543d);
+  color: #68d391;
+  border: 2px solid #38a169;
+}
+
+.app.dark .feedback.incorrect {
+  background: linear-gradient(135deg, #2d3748, #742a2a);
+  color: #fc8181;
+  border: 2px solid #e53e3e;
+}
+
+/* Indicadores en modo oscuro */
+.app.dark .score {
+  background: linear-gradient(135deg, rgba(72, 187, 120, 0.2), rgba(72, 187, 120, 0.1));
+  border: 1px solid rgba(72, 187, 120, 0.3);
+  color: #68d391;
+}
+
+.app.dark .lives {
+  background: linear-gradient(135deg, rgba(245, 101, 101, 0.2), rgba(245, 101, 101, 0.1));
+  border: 1px solid rgba(245, 101, 101, 0.3);
+  color: #fc8181;
+}
+
+.app.dark .round {
+  background: linear-gradient(135deg, rgba(66, 153, 225, 0.2), rgba(66, 153, 225, 0.1));
+  border: 1px solid rgba(66, 153, 225, 0.3);
+  color: #63b3ed;
+}
+
+.app.dark .difficulty {
+  background: linear-gradient(135deg, rgba(128, 90, 213, 0.2), rgba(128, 90, 213, 0.1));
+  border: 1px solid rgba(128, 90, 213, 0.3);
+  color: #9f7aea;
+}
+
+.app.dark .timer {
+  background: linear-gradient(135deg, rgba(237, 137, 54, 0.2), rgba(237, 137, 54, 0.1));
+  border: 1px solid rgba(237, 137, 54, 0.3);
+  color: #f6ad55;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .app {
+    padding: 15px;
+    margin: 10px;
+    border-radius: 20px;
+  }
+  
+  .game-over {
+    padding: 25px;
+    margin: 10px;
+  }
+  
+  .game-over h2 {
+    font-size: 1.5rem;
+  }
+  
+  .stat-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .stat {
+    min-width: auto;
+    padding: 15px;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
+  }
+}

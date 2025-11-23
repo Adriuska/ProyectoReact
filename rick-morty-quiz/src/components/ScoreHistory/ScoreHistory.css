@@ -1,0 +1,103 @@
+.score-history {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 25px;
+  border-radius: 15px;
+  margin-top: 25px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(103, 126, 234, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+.score-history h3 {
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+  font-size: 1.4rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.scores-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.score-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 15px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+/* Rayitas de colores para los puestos - MODO CLARO */
+.score-item:nth-child(1) {
+  border-left: 4px solid #FFD700; /* Oro */
+}
+
+.score-item:nth-child(2) {
+  border-left: 4px solid #C0C0C0; /* Plata */
+}
+
+.score-item:nth-child(3) {
+  border-left: 4px solid #CD7F32; /* Bronce */
+}
+
+.score-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.rank {
+  font-weight: bold;
+  color: #667eea;
+  font-size: 1.1rem;
+}
+
+.points {
+  color: #333;
+  font-weight: 600;
+}
+
+/* ===== MODO OSCURO ===== */
+.app.dark .score-history {
+  background: rgba(26, 32, 44, 0.95);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.app.dark .score-history h3 {
+  color: #e2e8f0;
+}
+
+.app.dark .score-item {
+  background: linear-gradient(135deg, #2d3748, #4a5568);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* MISMAS RAYITAS DE COLORES EN MODO OSCURO */
+.app.dark .score-item:nth-child(1) {
+  border-left: 4px solid #FFD700; /* Oro - mismo color */
+}
+
+.app.dark .score-item:nth-child(2) {
+  border-left: 4px solid #C0C0C0; /* Plata - mismo color */
+}
+
+.app.dark .score-item:nth-child(3) {
+  border-left: 4px solid #CD7F32; /* Bronce - mismo color */
+}
+
+.app.dark .rank {
+  color: #63b3ed;
+}
+
+.app.dark .points {
+  color: #e2e8f0;
+}
