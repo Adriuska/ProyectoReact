@@ -5,7 +5,7 @@ interface ScoreHistoryProps {
 }
 
 const ScoreHistory = ({ scores = [] }: ScoreHistoryProps) => {
-  const displayScores = scores.length > 0 ? scores : [150, 120, 90];
+  const displayScores = scores.length > 0 ? scores : [300, 245, 220];
 
   return (
     <div className="score-history">
