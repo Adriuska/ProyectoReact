@@ -247,7 +247,6 @@ function App() {
 
     currentStreak.current = 0;
     
-    
     const fetchNewCharacters = async () => {
       const randomIds = Array.from({ length: 12 }, () => 
         Math.floor(Math.random() * 826) + 1
@@ -271,9 +270,6 @@ function App() {
 
   return (
     <div className={`app ${theme.isDark ? 'dark' : ''}`}>
-      
-      
-    
       <GameHeader 
         gameState={gameState} 
         theme={theme}
