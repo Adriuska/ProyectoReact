@@ -31,11 +31,6 @@
   transition: all 0.3s ease;
 }
 
-.score-item.empty {
-  opacity: 0.6;
-  background: var(--score-empty-bg);
-}
-
 .score-item:first-child {
   border-color: gold;
   background: var(--score-first-bg);
@@ -65,21 +60,13 @@
   color: var(--text-color);
 }
 
-.score-item.empty .score {
-  font-style: italic;
-  color: var(--text-muted);
-  font-weight: normal;
-}
-
 /* Temas claros y oscuros */
 :root {
   --score-bg: #f8f9fa;
-  --score-empty-bg: #f0f0f0;
   --score-first-bg: #fff9e6;
 }
 
 .dark {
   --score-bg: #2d3748;
-  --score-empty-bg: #1a202c;
   --score-first-bg: #443a0f;
 }
