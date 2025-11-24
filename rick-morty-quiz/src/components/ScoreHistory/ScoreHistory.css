@@ -25,7 +25,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  background: var(--score-bg);
+  background: var(--card-bg);
   border-radius: 8px;
   border: 2px solid transparent;
   transition: all 0.3s ease;
@@ -33,7 +33,6 @@
 
 .score-item:first-child {
   border-color: gold;
-  background: var(--score-first-bg);
 }
 
 .score-item:nth-child(2) {
@@ -41,36 +40,28 @@
 }
 
 .score-item:nth-child(3) {
-  border-color: #cd7f32; /* bronze */
-}
-
-.score-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-color: #cd7f32;
 }
 
 .position {
   font-weight: bold;
   color: var(--accent-color);
   font-size: 1.1em;
+  background: transparent !important;
 }
 
 .score {
   font-weight: 600;
   color: var(--text-color);
-  /* ✅ QUITAMOS EL FONDO VERDE DE LOS NÚMEROS */
-  background: transparent;
-  padding: 0;
-  border: none;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
 }
 
-/* Temas claros y oscuros */
 :root {
-  --score-bg: #f8f9fa;
-  --score-first-bg: #fff9e6;
+  --card-bg: #ffffff;
 }
 
 .dark {
-  --score-bg: #2d3748;
-  --score-first-bg: #443a0f;
+  --card-bg: #1a202c;
 }
