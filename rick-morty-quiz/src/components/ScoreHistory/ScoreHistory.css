@@ -60,8 +60,10 @@
 
 :root {
   --card-bg: #ffffff;
+  --text-color: #000000;
 }
 
 .dark {
   --card-bg: #1a202c;
+  --text-color: #ffffff;
 }
