@@ -25,16 +25,15 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  /* ❌ QUITAMOS el fondo verde clarito: */
-  background: var(--card-bg); /* Mismo fondo que el contenedor */
+  background: var(--score-bg);
   border-radius: 8px;
   border: 2px solid transparent;
   transition: all 0.3s ease;
 }
 
-/* ✅ DEJAMOS los bordes de colores: */
 .score-item:first-child {
   border-color: gold;
+  background: var(--score-first-bg);
 }
 
 .score-item:nth-child(2) {
@@ -59,13 +58,19 @@
 .score {
   font-weight: 600;
   color: var(--text-color);
+  /* ✅ QUITAMOS EL FONDO VERDE DE LOS NÚMEROS */
+  background: transparent;
+  padding: 0;
+  border: none;
 }
 
 /* Temas claros y oscuros */
 :root {
-  --card-bg: #ffffff;
+  --score-bg: #f8f9fa;
+  --score-first-bg: #fff9e6;
 }
 
 .dark {
-  --card-bg: #1a202c;
+  --score-bg: #2d3748;
+  --score-first-bg: #443a0f;
 }

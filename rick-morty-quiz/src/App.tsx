@@ -20,7 +20,7 @@ function App() {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<Character | null>(null);
   const [options, setOptions] = useState<string[]>([]);
-  const [bestScores, setBestScores] = useState<number[]>([300, 235, 180]); // ✅ PUNTOS FIJOS
+  const [bestScores, setBestScores] = useState<number[]>([300, 235, 180]);
   const [gameStats, setGameStats] = useState<GameStats>({
     totalRounds: 0,
     correctAnswers: 0,
@@ -32,15 +32,6 @@ function App() {
   const roundStartTime = useRef<number>(0);
   const currentStreak = useRef<number>(0);
 
-  // ✅ COMENTADO: No cargar scores del localStorage
-  // useEffect(() => {
-  //   const savedScores = localStorage.getItem('rickMortyBestScores');
-  //   if (savedScores) {
-  //     setBestScores(JSON.parse(savedScores));
-  //   }
-  // }, []);
-
-  // Cargar personajes de la API
   useEffect(() => {
     const fetchCharacters = async () => {
       try {
@@ -61,14 +52,12 @@ function App() {
     fetchCharacters();
   }, []);
 
-  // Calcular dificultad basada en la ronda
   const calculateDifficulty = (round: number) => {
     if (round <= 5) return 'easy';
     if (round <= 10) return 'medium';
     return 'hard';
   };
 
-  // Calcular tiempo según dificultad
   const getTimeByDifficulty = (difficulty: string) => {
     switch (difficulty) {
       case 'easy': return 30;
@@ -78,7 +67,6 @@ function App() {
     }
   };
 
-  // Temporizador del juego
   useEffect(() => {
     if (gameState.isGameOver || gameState.timeLeft <= 0) return;
 
@@ -88,7 +76,6 @@ function App() {
           const newLives = prev.lives - 1;
           const newDifficulty = calculateDifficulty(prev.currentRound);
           
-          // Actualizar estadísticas
           setGameStats(prevStats => ({
             ...prevStats,
             incorrectAnswers: prevStats.incorrectAnswers + 1,
@@ -113,26 +100,12 @@ function App() {
     return () => clearInterval(timer);
   }, [gameState.isGameOver, gameState.timeLeft]);
 
-  // Verificar fin del juego
   useEffect(() => {
     if (gameState.lives <= 0 && !gameState.isGameOver) {
       setGameState(prev => ({ ...prev, isGameOver: true }));
     }
   }, [gameState.lives, gameState.isGameOver]);
 
-  // ✅ COMENTADO: No guardar scores en localStorage
-  // useEffect(() => {
-  //   if (gameState.isGameOver && gameState.score > 0) {
-  //     const newScores = [...bestScores, gameState.score]
-  //       .sort((a, b) => b - a)
-  //       .slice(0, 3);
-      
-  //     setBestScores(newScores);
-  //     localStorage.setItem('rickMortyBestScores', JSON.stringify(newScores));
-  //   }
-  // }, [gameState.isGameOver, gameState.score]);
-
-  // Generar nueva pregunta
   useEffect(() => {
     if (characters.length > 0 && !gameState.isGameOver) {
       generateNewQuestion();
@@ -163,7 +136,6 @@ function App() {
   const handleAnswer = (isCorrect: boolean) => {
     if (gameState.isGameOver) return;
 
-    // Calcular tiempo de respuesta
     const responseTime = (Date.now() - roundStartTime.current) / 1000;
     const newAverageTime = (gameStats.averageTime * gameStats.totalRounds + responseTime) / (gameStats.totalRounds + 1);
 
