@@ -20,7 +20,7 @@ function App() {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<Character | null>(null);
   const [options, setOptions] = useState<string[]>([]);
-  const [bestScores, setBestScores] = useState<number[]>([]);
+  const [bestScores, setBestScores] = useState<number[]>([300, 235, 180]); // ✅ PUNTOS FIJOS
   const [gameStats, setGameStats] = useState<GameStats>({
     totalRounds: 0,
     correctAnswers: 0,
@@ -32,13 +32,13 @@ function App() {
   const roundStartTime = useRef<number>(0);
   const currentStreak = useRef<number>(0);
 
-  // Cargar mejores puntuaciones al iniciar
-  useEffect(() => {
-    const savedScores = localStorage.getItem('rickMortyBestScores');
-    if (savedScores) {
-      setBestScores(JSON.parse(savedScores));
-    }
-  }, []);
+  // ✅ COMENTADO: No cargar scores del localStorage
+  // useEffect(() => {
+  //   const savedScores = localStorage.getItem('rickMortyBestScores');
+  //   if (savedScores) {
+  //     setBestScores(JSON.parse(savedScores));
+  //   }
+  // }, []);
 
   // Cargar personajes de la API
   useEffect(() => {
@@ -120,17 +120,17 @@ function App() {
     }
   }, [gameState.lives, gameState.isGameOver]);
 
-  // Guardar puntuación cuando termina el juego
-  useEffect(() => {
-    if (gameState.isGameOver && gameState.score > 0) {
-      const newScores = [...bestScores, gameState.score]
-        .sort((a, b) => b - a)
-        .slice(0, 3);
+  // ✅ COMENTADO: No guardar scores en localStorage
+  // useEffect(() => {
+  //   if (gameState.isGameOver && gameState.score > 0) {
+  //     const newScores = [...bestScores, gameState.score]
+  //       .sort((a, b) => b - a)
+  //       .slice(0, 3);
       
-      setBestScores(newScores);
-      localStorage.setItem('rickMortyBestScores', JSON.stringify(newScores));
-    }
-  }, [gameState.isGameOver, gameState.score]);
+  //     setBestScores(newScores);
+  //     localStorage.setItem('rickMortyBestScores', JSON.stringify(newScores));
+  //   }
+  // }, [gameState.isGameOver, gameState.score]);
 
   // Generar nueva pregunta
   useEffect(() => {
