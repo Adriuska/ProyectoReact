@@ -5,24 +5,25 @@ interface ScoreHistoryProps {
 }
 
 const ScoreHistory = ({ scores }: ScoreHistoryProps) => {
+  // Siempre mostrar 3 posiciones, rellenar con 0 si no hay scores
+  const displayScores = [...scores];
+  while (displayScores.length < 3) {
+    displayScores.push(0);
+  }
+
   return (
     <div className="score-history">
       <h3>🏆 Top 3 Puntuaciones</h3>
-      {scores.length === 0 ? (
-        <div className="no-scores">
-          <p>🎯 Aún no hay puntuaciones</p>
-          <p className="hint">¡Juega para aparecer aquí!</p>
-        </div>
-      ) : (
-        <div className="scores-list">
-          {scores.slice(0, 3).map((score, index) => (
-            <div key={index} className="score-item">
-              <span className="position">#{index + 1}</span>
-              <span className="score">{score} puntos</span>
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="scores-list">
+        {displayScores.slice(0, 3).map((score, index) => (
+          <div key={index} className={`score-item ${score === 0 ? 'empty' : ''}`}>
+            <span className="position">#{index + 1}</span>
+            <span className="score">
+              {score === 0 ? 'Sin puntuación' : `${score} puntos`}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
