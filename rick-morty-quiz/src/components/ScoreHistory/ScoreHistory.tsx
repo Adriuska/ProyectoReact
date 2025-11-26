@@ -4,6 +4,10 @@ interface ScoreHistoryProps {
   scores: number[];
 }
 
+/**
+ * Componente que muestra el historial de las mejores puntuaciones
+ * Muestra el top 3 de puntuaciones más altas
+ */
 const ScoreHistory = ({ scores }: ScoreHistoryProps) => {
   if (scores.length === 0) {
     return null;

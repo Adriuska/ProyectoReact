@@ -9,18 +9,32 @@ interface CharacterCardProps {
   difficulty: 'easy' | 'medium' | 'hard';
 }
 
+/**
+ * Componente que muestra la tarjeta del personaje con la imagen difuminada
+ * y las opciones de respuesta
+ */
 const CharacterCard = ({ currentQuestion, options, onAnswer, difficulty }: CharacterCardProps) => {
+  // Estado para rastrear la respuesta seleccionada
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  
+  // Estado para mostrar el feedback visual (correcto/incorrecto)
   const [showFeedback, setShowFeedback] = useState(false);
 
+  /**
+   * Maneja la selección de una respuesta por parte del jugador
+   * @param selectedName - Nombre del personaje seleccionado
+   */
   const handleAnswer = (selectedName: string) => {
+    // Evita respuestas múltiples
     if (!currentQuestion || selectedAnswer) return;
     
     setSelectedAnswer(selectedName);
     setShowFeedback(true);
     
+    // Verifica si la respuesta es correcta
     const isCorrect = selectedName === currentQuestion.name;
     
+    // Después de 1.5 segundos, notifica al componente padre y resetea el estado
     setTimeout(() => {
       onAnswer(isCorrect);
       setSelectedAnswer(null);
@@ -28,6 +42,10 @@ const CharacterCard = ({ currentQuestion, options, onAnswer, difficulty }: Chara
     }, 1500);
   };
 
+  /**
+   * Retorna el estilo de blur según la dificultad
+   * Fácil: blur ligero, Media: blur medio, Difícil: blur intenso
+   */
   const getBlurStyle = () => {
     switch(difficulty) {
       case 'easy':
@@ -41,14 +59,23 @@ const CharacterCard = ({ currentQuestion, options, onAnswer, difficulty }: Chara
     }
   };
 
+  /**
+   * Determina la clase CSS del botón según el estado de la respuesta
+   * @param option - Nombre de la opción
+   * @returns Clase CSS apropiada (correct, incorrect, disabled)
+   */
   const getButtonClass = (option: string) => {
+    // Si no hay respuesta seleccionada, todos los botones están activos
     if (!selectedAnswer) return "option-btn";
     
+    // Marca en verde la respuesta correcta
     if (option === currentQuestion!.name) {
       return "option-btn correct";
     } else if (option === selectedAnswer && option !== currentQuestion!.name) {
+      // Marca en rojo la respuesta incorrecta seleccionada
       return "option-btn incorrect";
     }
+    // Desactiva el resto de opciones
     return "option-btn disabled";
   };
 

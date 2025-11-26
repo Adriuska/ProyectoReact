@@ -7,6 +7,10 @@ interface GameControlsProps {
   onRestart: () => void;
 }
 
+/**
+ * Componente que muestra los controles del juego
+ * Actualmente solo incluye el botón de reinicio
+ */
 const GameControls = ({ gameState, onRestart }: GameControlsProps) => {
   return (
     <div className="game-controls">

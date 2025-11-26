@@ -7,6 +7,15 @@ interface GameHeaderProps {
   onToggleTheme: () => void;
 }
 
+/**
+ * Componente que muestra el encabezado del juego con:
+ * - Puntuación actual
+ * - Vidas restantes
+ * - Número de ronda
+ * - Dificultad
+ * - Temporizador
+ * - Botón de cambio de tema
+ */
 const GameHeader = ({ gameState, theme, onToggleTheme }: GameHeaderProps) => {
   return (
     <header className="game-header">
