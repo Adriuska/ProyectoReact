@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import GameHeader from './components/GameHeader/GameHeader';
 import CharacterCard from './components/CharacterCard/CharacterCard';
-import GameControls from './components/GameControls/GameControls';
 import ScoreHistory from './components/ScoreHistory/ScoreHistory';
 import { GameState, Character, AppTheme, GameStats } from './types/game';
 
@@ -33,8 +32,11 @@ function App() {
   // Opciones de respuesta para la pregunta actual (4 nombres)
   const [options, setOptions] = useState<string[]>([]);
   
-  // Top 3 de mejores puntuaciones (actualmente hardcodeado)
-  const [bestScores, setBestScores] = useState<number[]>([300, 235, 180]);
+  // Top 5 de mejores puntuaciones guardadas en localStorage
+  const [topScores, setTopScores] = useState<number[]>(() => {
+    const saved = localStorage.getItem('rickMortyTopScores');
+    return saved ? JSON.parse(saved) : [];
+  });
   
   // Estadísticas de la partida: rondas, aciertos, errores, racha y tiempo promedio
   const [gameStats, setGameStats] = useState<GameStats>({
@@ -140,13 +142,13 @@ function App() {
   }, [gameState.isGameOver, gameState.timeLeft]);
 
   /**
-   * Efecto que detecta cuando se acaban las vidas y finaliza el juego
+   * Efecto que guarda la puntuación cuando el juego termina
    */
   useEffect(() => {
-    if (gameState.lives <= 0 && !gameState.isGameOver) {
-      setGameState(prev => ({ ...prev, isGameOver: true }));
+    if (gameState.isGameOver && gameState.score > 0) {
+      saveScore(gameState.score);
     }
-  }, [gameState.lives, gameState.isGameOver]);
+  }, [gameState.isGameOver]);
 
   /**
    * Efecto que genera una nueva pregunta cuando cambian los personajes o la ronda
@@ -308,6 +310,21 @@ function App() {
   };
 
   /**
+   * Guarda la puntuación final en el top 5 si es suficientemente alta
+   * @param finalScore - Puntuación final del jugador
+   */
+  const saveScore = (finalScore: number) => {
+    if (finalScore === 0) return; // No guardar puntuaciones de 0
+    
+    const newScores = [...topScores, finalScore]
+      .sort((a, b) => b - a) // Ordenar de mayor a menor
+      .slice(0, 5); // Mantener solo top 5
+    
+    setTopScores(newScores);
+    localStorage.setItem('rickMortyTopScores', JSON.stringify(newScores));
+  };
+
+  /**
    * Alterna entre tema claro y oscuro
    */
   const toggleTheme = () => {
@@ -373,18 +390,15 @@ function App() {
           </button>
         </div>
       ) : (
-        <>
-          <CharacterCard 
-            currentQuestion={currentQuestion}
-            options={options}
-            onAnswer={handleAnswer}
-            difficulty={gameState.difficulty}
-          />
-          <GameControls gameState={gameState} setGameState={setGameState} onRestart={restartGame} />
-        </>
+        <CharacterCard 
+          currentQuestion={currentQuestion}
+          options={options}
+          onAnswer={handleAnswer}
+          difficulty={gameState.difficulty}
+        />
       )}
       
-      <ScoreHistory scores={bestScores} />
+      <ScoreHistory scores={topScores} />
     </div>
   );
 }

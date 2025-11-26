@@ -29,7 +29,7 @@ const GameHeader = ({ gameState, theme, onToggleTheme }: GameHeaderProps) => {
       <div className={`timer ${gameState.timeLeft <= 10 ? 'warning' : ''}`}>
         Tiempo: {gameState.timeLeft}s
       </div>
-      <button className="theme-toggle" onClick={onToggleTheme}>
+      <button className="theme-toggle" onClick={onToggleTheme} title="Cambiar tema">
         {theme.isDark ? '☀️' : '🌙'}
       </button>
     </header>

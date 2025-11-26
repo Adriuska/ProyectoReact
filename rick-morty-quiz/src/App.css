@@ -167,7 +167,6 @@ body {
 
 .app.dark .character-card,
 .app.dark .game-header,
-.app.dark .score-history,
 .app.dark .game-over {
   background: rgba(26, 32, 44, 0.95);
   color: #e2e8f0;
@@ -215,11 +214,6 @@ body {
 
 .app.dark .option-btn.incorrect {
   background: linear-gradient(135deg, #c53030, #9b2c2c);
-}
-
-.app.dark .score-item {
-  background: linear-gradient(135deg, #2d3748, #4a5568);
-  border-left: 4px solid #63b3ed;
 }
 
 .app.dark .difficulty-indicator {
@@ -301,15 +295,4 @@ body {
   .stat-value {
     font-size: 1.5rem;
   }
-}
-.no-scores {
-  text-align: center;
-  padding: 20px;
-  color: #666;
-}
-
-.hint {
-  font-size: 0.9em;
-  opacity: 0.7;
-  margin-top: 5px;
 }
