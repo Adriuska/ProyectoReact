@@ -1,12 +1,11 @@
-
-export interface Character {
+export type Character = {
   id: number;
   name: string;
   image: string;
 }
 
 
-export interface GameState {
+export type GameState = {
   score: number;              
   lives: number;              
   currentRound: number;       
@@ -16,11 +15,11 @@ export interface GameState {
 }
 
 
-export interface AppTheme {
+export type AppTheme = {
   isDark: boolean; 
 }
 
-export interface GameStats {
+export type GameStats = {
   totalRounds: number;        
   correctAnswers: number;    
   incorrectAnswers: number;   

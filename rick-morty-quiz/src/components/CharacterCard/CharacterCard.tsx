@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Character } from '../../types/game';
+import { Character } from '../../interfaces/interfaces';
 import './CharacterCard.css';
 
-interface CharacterCardProps {
+type CharacterCardProps = {
   currentQuestion: Character | null;
   options: string[];
   onAnswer: (isCorrect: boolean) => void;

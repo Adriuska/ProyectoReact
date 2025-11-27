@@ -1,7 +1,7 @@
-import { GameState, AppTheme } from '../../types/game';
+import { GameState, AppTheme } from '../../interfaces/interfaces';
 import './GameHeader.css';
 
-interface GameHeaderProps {
+type GameHeaderProps = {
   gameState: GameState;
   theme: AppTheme;
   onToggleTheme: () => void;

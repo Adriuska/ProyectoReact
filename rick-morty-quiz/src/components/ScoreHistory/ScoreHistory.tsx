@@ -1,6 +1,6 @@
 import './ScoreHistory.css';
 
-interface ScoreHistoryProps {
+type ScoreHistoryProps = {
   scores: number[];
 }
 

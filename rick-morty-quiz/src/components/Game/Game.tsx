@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { GameState, Character, AppTheme, GameStats } from '../../types/game';
+import { GameState, Character, AppTheme, GameStats } from '../../interfaces/interfaces';
 import GameHeader from '../GameHeader/GameHeader';
 import CharacterCard from '../CharacterCard/CharacterCard';
 import ScoreHistory from '../ScoreHistory/ScoreHistory';
