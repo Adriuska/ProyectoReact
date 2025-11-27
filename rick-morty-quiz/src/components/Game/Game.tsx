@@ -4,12 +4,7 @@ import GameHeader from '../GameHeader/GameHeader';
 import CharacterCard from '../CharacterCard/CharacterCard';
 import ScoreHistory from '../ScoreHistory/ScoreHistory';
 
-/**
- * Componente principal que maneja toda la lógica del juego
- * Incluye el estado, temporizador, comunicación con la API y gestión de puntuaciones
- */
 const Game = () => {
-    // Estado principal del juego: puntos, vidas, ronda actual, tiempo restante y dificultad
     const [gameState, setGameState] = useState<GameState>({
         score: 0,
         lives: 3,
@@ -19,25 +14,19 @@ const Game = () => {
         difficulty: 'easy'
     });
 
-    // Estado del tema visual (claro/oscuro)
     const [theme, setTheme] = useState<AppTheme>({ isDark: false });
 
-    // Lista de personajes obtenidos de la API
     const [characters, setCharacters] = useState<Character[]>([]);
 
-    // Personaje actual que se debe adivinar
     const [currentQuestion, setCurrentQuestion] = useState<Character | null>(null);
 
-    // Opciones de respuesta para la pregunta actual (4 nombres)
     const [options, setOptions] = useState<string[]>([]);
 
-    // Top 5 de mejores puntuaciones guardadas en localStorage
     const [topScores, setTopScores] = useState<number[]>(() => {
         const saved = localStorage.getItem('rickMortyTopScores');
         return saved ? JSON.parse(saved) : [];
     });
 
-    // Estadísticas de la partida: rondas, aciertos, errores, racha y tiempo promedio
     const [gameStats, setGameStats] = useState<GameStats>({
         totalRounds: 0,
         correctAnswers: 0,
@@ -46,25 +35,17 @@ const Game = () => {
         averageTime: 0
     });
 
-    // Referencia al tiempo de inicio de cada ronda para calcular el tiempo de respuesta
     const roundStartTime = useRef<number>(0);
 
-    // Referencia a la racha actual de respuestas correctas consecutivas
     const currentStreak = useRef<number>(0);
 
-    /**
-     * Efecto que se ejecuta al montar el componente
-     * Obtiene 12 personajes aleatorios de la API de Rick and Morty
-     */
     useEffect(() => {
         const fetchCharacters = async () => {
             try {
-                // Genera 12 IDs aleatorios entre 1 y 826 (total de personajes en la API)
                 const randomIds = Array.from({ length: 12 }, () =>
                     Math.floor(Math.random() * 826) + 1
                 );
 
-                // Consulta múltiples personajes en una sola petición
                 const response = await fetch(
                     `https://rickandmortyapi.com/api/character/${randomIds.join(',')}`
                 );
@@ -78,22 +59,12 @@ const Game = () => {
         fetchCharacters();
     }, []);
 
-    /**
-     * Calcula el nivel de dificultad según el número de ronda
-     * @param round - Número de la ronda actual
-     * @returns 'easy' (1-5), 'medium' (6-10) o 'hard' (11+)
-     */
     const calculateDifficulty = (round: number) => {
         if (round <= 5) return 'easy';
         if (round <= 10) return 'medium';
         return 'hard';
     };
 
-    /**
-     * Obtiene el tiempo disponible según la dificultad
-     * @param difficulty - Nivel de dificultad actual
-     * @returns Segundos disponibles (30, 25 o 20)
-     */
     const getTimeByDifficulty = (difficulty: string) => {
         switch (difficulty) {
             case 'easy': return 30;
@@ -103,10 +74,6 @@ const Game = () => {
         }
     };
 
-    /**
-     * Efecto que maneja el temporizador del juego
-     * Cuenta regresiva cada segundo y aplica penalización si se agota el tiempo
-     */
     useEffect(() => {
         if (gameState.isGameOver || gameState.timeLeft <= 0) return;
 
@@ -140,47 +107,32 @@ const Game = () => {
         return () => clearInterval(timer);
     }, [gameState.isGameOver, gameState.timeLeft]);
 
-    /**
-     * Efecto que guarda la puntuación cuando el juego termina
-     */
     useEffect(() => {
         if (gameState.isGameOver && gameState.score > 0) {
             saveScore(gameState.score);
         }
     }, [gameState.isGameOver]);
 
-    /**
-     * Efecto que genera una nueva pregunta cuando cambian los personajes o la ronda
-     */
     useEffect(() => {
         if (characters.length > 0 && !gameState.isGameOver) {
             generateNewQuestion();
         }
     }, [characters, gameState.currentRound, gameState.isGameOver]);
 
-    /**
-     * Genera una nueva pregunta seleccionando un personaje aleatorio
-     * y 3 opciones incorrectas adicionales
-     */
     const generateNewQuestion = () => {
         if (characters.length < 4 || gameState.isGameOver) return;
 
-        // Guarda el tiempo de inicio para calcular el tiempo de respuesta
         roundStartTime.current = Date.now();
 
-        // Mezcla los personajes aleatoriamente
         const shuffledCharacters = [...characters].sort(() => Math.random() - 0.5);
 
-        // El primer personaje será la respuesta correcta
         const correctCharacter = shuffledCharacters[0];
         setCurrentQuestion(correctCharacter);
 
-        // Selecciona 3 personajes adicionales como opciones incorrectas
         const otherCharacters = shuffledCharacters
             .slice(1, 4)
             .sort(() => Math.random() - 0.5);
 
-        // Mezcla todas las opciones (1 correcta + 3 incorrectas)
         const allOptions = [
             correctCharacter.name,
             ...otherCharacters.map(char => char.name)
@@ -189,20 +141,13 @@ const Game = () => {
         setOptions(allOptions);
     };
 
-    /**
-     * Maneja la respuesta del jugador, actualiza puntuación, vidas y estadísticas
-     * @param isCorrect - Si la respuesta fue correcta o no
-     */
     const handleAnswer = (isCorrect: boolean) => {
         if (gameState.isGameOver) return;
 
-        // Calcula el tiempo que tardó en responder
         const responseTime = (Date.now() - roundStartTime.current) / 1000;
         const newAverageTime = (gameStats.averageTime * gameStats.totalRounds + responseTime) / (gameStats.totalRounds + 1);
 
-        // Manejo de respuesta correcta
         if (isCorrect) {
-            // Incrementa la racha de aciertos consecutivos
             currentStreak.current += 1;
             const newBestStreak = Math.max(currentStreak.current, gameStats.bestStreak);
 
@@ -214,30 +159,25 @@ const Game = () => {
                 averageTime: newAverageTime
             }));
 
-            // Avanza a la siguiente ronda
             const newRound = gameState.currentRound + 1;
             const newDifficulty = calculateDifficulty(newRound);
             const newTime = getTimeByDifficulty(newDifficulty);
 
-            // Si cambió la dificultad, restaura las vidas a 3
             const difficultyChanged = newDifficulty !== gameState.difficulty;
 
             setGameState(prev => ({
                 ...prev,
-                score: prev.score + 10, // +10 puntos por respuesta correcta
+                score: prev.score + 10,
                 currentRound: newRound,
                 difficulty: newDifficulty,
                 timeLeft: newTime,
                 lives: difficultyChanged ? 3 : prev.lives
             }));
 
-            // Genera una nueva pregunta después de 1 segundo
             setTimeout(() => {
                 generateNewQuestion();
             }, 1000);
         } else {
-            // Manejo de respuesta incorrecta
-            // Resetea la racha de aciertos consecutivos
             currentStreak.current = 0;
 
             setGameStats(prev => ({
@@ -253,13 +193,12 @@ const Game = () => {
 
             setGameState(prev => ({
                 ...prev,
-                lives: newLives, // -1 vida
-                score: Math.max(0, prev.score - 5), // -5 puntos (mínimo 0)
+                lives: newLives,
+                score: Math.max(0, prev.score - 5),
                 timeLeft: newTime,
                 isGameOver: newLives <= 0
             }));
 
-            // Si quedan vidas, genera una nueva pregunta después de 1 segundo
             if (newLives > 0) {
                 setTimeout(() => {
                     generateNewQuestion();
@@ -268,11 +207,7 @@ const Game = () => {
         }
     };
 
-    /**
-     * Reinicia el juego a su estado inicial y obtiene nuevos personajes
-     */
     const restartGame = () => {
-        // Resetea el estado del juego
         setGameState({
             score: 0,
             lives: 3,
@@ -282,7 +217,6 @@ const Game = () => {
             difficulty: 'easy'
         });
 
-        // Resetea las estadísticas
         setGameStats({
             totalRounds: 0,
             correctAnswers: 0,
@@ -291,10 +225,8 @@ const Game = () => {
             averageTime: 0
         });
 
-        // Resetea la racha actual
         currentStreak.current = 0;
 
-        // Obtiene un nuevo conjunto de personajes para la nueva partida
         const fetchNewCharacters = async () => {
             const randomIds = Array.from({ length: 12 }, () =>
                 Math.floor(Math.random() * 826) + 1
@@ -308,29 +240,21 @@ const Game = () => {
         fetchNewCharacters();
     };
 
-    /**
-     * Guarda la puntuación final en el top 5 si es suficientemente alta
-     * @param finalScore - Puntuación final del jugador
-     */
     const saveScore = (finalScore: number) => {
-        if (finalScore === 0) return; // No guardar puntuaciones de 0
+        if (finalScore === 0) return;
 
         const newScores = [...topScores, finalScore]
-            .sort((a, b) => b - a) // Ordenar de mayor a menor
-            .slice(0, 5); // Mantener solo top 5
+            .sort((a, b) => b - a)
+            .slice(0, 5);
 
         setTopScores(newScores);
         localStorage.setItem('rickMortyTopScores', JSON.stringify(newScores));
     };
 
-    /**
-     * Alterna entre tema claro y oscuro
-     */
     const toggleTheme = () => {
         setTheme(prev => ({ isDark: !prev.isDark }));
     };
 
-    // Calcula el porcentaje de precisión del jugador
     const accuracy = gameStats.totalRounds > 0
         ? Math.round((gameStats.correctAnswers / gameStats.totalRounds) * 100)
         : 0;

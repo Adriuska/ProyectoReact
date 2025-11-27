@@ -4,10 +4,6 @@ interface ScoreHistoryProps {
   scores: number[];
 }
 
-/**
- * Componente que muestra el historial de las mejores puntuaciones
- * Muestra el top 5 de puntuaciones más altas guardadas en localStorage
- */
 const ScoreHistory = ({ scores }: ScoreHistoryProps) => {
   if (scores.length === 0) {
     return (
